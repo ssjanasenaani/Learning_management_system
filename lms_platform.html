@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS Platform - Learn Anywhere</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            color: #667eea;
+        }
+
+        .navbar-menu button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+
+        .navbar-menu button:hover {
+            transform: translateY(-2px);
+        }
+
+        .welcome-text {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .page-header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .course-thumbnail {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .course-level {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.9);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .course-info {
+            padding: 1.5rem;
+        }
+
+        .course-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .instructor {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+
+        /* Course Detail Page */
+        .course-detail {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .course-header h1 {
+            color: #333;
+            font-size: 2rem;
+        }
+
+        .course-meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .meta-value {
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .section-title {
+            color: #333;
+            margin: 2rem 0 1rem;
+            font-size: 1.5rem;
+        }
+
+        .lessons-list {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .lesson-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .lesson-item:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-item:hover {
+            background: #f8f9fa;
+        }
+
+        .lesson-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .lesson-info {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .lesson-duration {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Learning Page */
+        .learning-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .video-section {
+            padding: 2rem;
+        }
+
+        .video-player {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            background: #000;
+        }
+
+        .video-player video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .video-placeholder h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .video-placeholder p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .play-button::after {
+            content: '▶';
+            color: #667eea;
+            font-size: 2rem;
+            margin-left: 5px;
+        }
+
+        .lesson-info {
+            margin-top: 1.5rem;
+        }
+
+        .lesson-info h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .navigation-buttons .btn {
+            flex: 1;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lesson-sidebar {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-left: 1px solid #eee;
+        }
+
+        .lesson-sidebar h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .sidebar-lesson-item {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-lesson-item:hover {
+            background: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar-lesson-item.active {
+            background: white;
+            border-left-color: #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-lesson-item.completed {
+            background: #f0f9f0;
+        }
+
+        .sidebar-lesson-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-lesson-meta {
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .completed-badge {
+            color: #48bb78;
+            font-weight: 600;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+
+        .auth-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .auth-form h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+        }
+
+        .auth-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Messages */
+        .error-message {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 2rem;
+        }
+
+        /* Hide/Show Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Remember Me Checkbox */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .remember-me input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .remember-me label {
+            color: #555;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .learning-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .lesson-sidebar {
+                border-left: none;
+                border-top: 1px solid #eee;
+            }
+            
+            .navbar-menu {
+                gap: 1rem;
+            }
+            
+            .navbar-brand a {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="#" onclick="showPage('courses')">LMS Platform</a>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="#" onclick="showPage('courses')">Courses</a>
+            <span class="welcome-text" id="welcomeMessage"></span>
+            <button id="authButton" onclick="handleAuthAction()">Login</button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Courses List Page -->
+        <div id="coursesPage" class="page active">
+            <div class="page-header">
+                <h1>Available Courses</h1>
+                <p>Start your learning journey today</p>
+            </div>
+            <div id="coursesList" class="course-grid"></div>
+        </div>
+
+        <!-- Course Detail Page -->
+        <div id="courseDetailPage" class="page">
+            <div id="courseDetail"></div>
+        </div>
+
+        <!-- Learning Page -->
+        <div id="learningPage" class="page">
+            <div id="learningContent"></div>
+        </div>
+
+        <!-- My Courses Page -->
+        <div id="myCoursesPage" class="page">
+            <div class="page-header">
+                <h1>My Courses</h1>
+                <p>Continue your learning journey</p>
+            </div>
+            <div id="myCoursesList" class="course-grid"></div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="loginPage" class="page">
+            <div class="auth-container">
+                <div class="auth-form">
+                    <h2>Login</h2>
+                    <div id="loginError" class="error-message" style="display: none;"></div>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <div class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div class="auth-link">
+                            Don't have an account? <a href="#" onclick="showPage('register')">Register</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="registerPage" class="page">
+            <div class="auth-container">
+                <div class="auth-form">
+                    <h2>Register</h2>
+                    <div id="registerError" class="error-message" style="display: none;"></div>
+                    <div id="registerSuccess" class="success-message" style="display: none;"></div>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="registerUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" id="registerConfirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <div class="auth-link">
+                            Already have an account? <a href="#" onclick="showPage('login')">Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample course data with video URLs that actually work
+        const coursesData = [
+            {
+                id: 1,
+                title: "AI & ML",
+                instructor: "Dr. Ankit Sharma",
+                level: "Advanced",
+                totalVideos: 40,
+                totalSections: 6,
+                description: "Master artificial intelligence and machine learning concepts with hands-on projects and real-world applications.",
+                thumbnail: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400",
+                lessons: [
+                    { id: 1, title: "Introduction to AI", duration: 15, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4", description: "Learn the fundamentals of Artificial Intelligence" },
+                    { id: 2, title: "Python for AI", duration: 20, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/1080/Sintel_1080_10s_1MB.mp4", description: "Python programming essentials for AI" },
+                    { id: 3, title: "Machine Learning Basics", duration: 25, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/1080/TearsOfSteel_1080_10s_1MB.mp4", description: "Introduction to Machine Learning algorithms" },
+                    { id: 4, title: "Deep Learning Fundamentals", duration: 22, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", description: "Understanding neural networks and deep learning" },
+                    { id: 5, title: "Neural Networks", duration: 18, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/720/Sintel_720_10s_1MB.mp4", description: "Deep dive into neural network architecture" },
+                    { id: 6, title: "Model Deployment", duration: 16, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/720/TearsOfSteel_720_10s_1MB.mp4", description: "Deploy ML models to production" }
+                ]
+            },
+            {
+                id: 2,
+                title: "Java",
+                instructor: "Mr. Rahul Verma",
+                level: "Intermediate",
+                totalVideos: 48,
+                totalSections: 6,
+                description: "Complete Java programming course from basics to Spring Boot framework with practical examples.",
+                thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400",
+                lessons: [
+                    { id: 7, title: "Java Basics", duration: 25, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4", description: "Introduction to Java programming" },
+                    { id: 8, title: "OOP Concepts", duration: 30, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/1080/Sintel_1080_10s_1MB.mp4", description: "Object-oriented programming in Java" },
+                    { id: 9, title: "Collections Framework", duration: 28, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/1080/TearsOfSteel_1080_10s_1MB.mp4", description: "Working with Java collections" },
+                    { id: 10, title: "Exception Handling", duration: 20, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", description: "Handling exceptions in Java" },
+                    { id: 11, title: "Multithreading", duration: 22, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/720/Sintel_720_10s_1MB.mp4", description: "Concurrent programming in Java" },
+                    { id: 12, title: "Spring Boot Intro", duration: 24, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/720/TearsOfSteel_720_10s_1MB.mp4", description: "Introduction to Spring Boot framework" }
+                ]
+            },
+            {
+                id: 3,
+                title: "Python",
+                instructor: "Ms. Sneha Kulkarni",
+                level: "Beginner",
+                totalVideos: 46,
+                totalSections: 6,
+                description: "Learn Python programming from scratch with practical examples and mini-projects.",
+                thumbnail: "https://images.unsplash.com/photo-1526379095098-400b3c9b9c6f?w=400",
+                lessons: [
+                    { id: 13, title: "Python Fundamentals", duration: 15, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4", description: "Basic Python syntax and concepts" },
+                    { id: 14, title: "Data Structures", duration: 9, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/1080/Sintel_1080_10s_1MB.mp4", description: "Lists, tuples, dictionaries, and sets" },
+                    { id: 15, title: "Functions & Modules", duration: 6, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/1080/TearsOfSteel_1080_10s_1MB.mp4", description: "Creating functions and modules" },
+                    { id: 16, title: "File Handling", duration: 4, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", description: "Reading and writing files" },
+                    { id: 17, title: "OOP in Python", duration: 7, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/720/Sintel_720_10s_1MB.mp4", description: "Object-oriented programming in Python" },
+                    { id: 18, title: "Mini Project", duration: 5, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/720/TearsOfSteel_720_10s_1MB.mp4", description: "Build a practical Python project" }
+                ]
+            },
+            {
+                id: 4,
+                title: "Data Science",
+                instructor: "Dr. Priya Nair",
+                level: "Advanced",
+                totalVideos: 41,
+                totalSections: 6,
+                description: "Comprehensive data science bootcamp covering statistics, ML, and visualization.",
+                thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
+                lessons: [
+                    { id: 19, title: "Intro to Data Science", duration: 6, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4", description: "Overview of data science field" },
+                    { id: 20, title: "Statistics & Probability", duration: 10, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/1080/Sintel_1080_10s_1MB.mp4", description: "Statistical concepts for data science" },
+                    { id: 21, title: "Data Cleaning", duration: 5, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/1080/TearsOfSteel_1080_10s_1MB.mp4", description: "Techniques for cleaning data" },
+                    { id: 22, title: "EDA", duration: 6, videoUrl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", description: "Exploratory Data Analysis" },
+                    { id: 23, title: "Machine Learning for DS", duration: 9, videoUrl: "https://test-videos.co.uk/vids/sintel/mp4/h264/720/Sintel_720_10s_1MB.mp4", description: "ML algorithms for data science" },
+                    { id: 24, title: "Data Visualization", duration: 5, videoUrl: "https://test-videos.co.uk/vids/tearsofsteel/mp4/h264/720/TearsOfSteel_720_10s_1MB.mp4", description: "Creating effective visualizations" }
+                ]
+            }
+        ];
+
+        // State management
+        let currentUser = null;
+        let enrollments = JSON.parse(localStorage.getItem('enrollments')) || {};
+        let completedLessons = JSON.parse(localStorage.getItem('completedLessons')) || {};
+        let lastWatchedLessons = JSON.parse(localStorage.getItem('lastWatchedLessons')) || {};
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Initialize app with persistent login
+        function init() {
+            // Check for saved login in localStorage (remember me)
+            const savedUser = localStorage.getItem('rememberedUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            } else {
+                // Check session storage
+                const sessionUser = sessionStorage.getItem('currentUser');
+                if (sessionUser) {
+                    currentUser = JSON.parse(sessionUser);
+                }
+            }
+            
+            updateNavbar();
+            renderCourses();
+        }
+
+        // Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId + 'Page').classList.add('active');
+            
+            // Render appropriate content
+            if (pageId === 'courses') {
+                renderCourses();
+            } else if (pageId === 'myCourses') {
+                renderMyCourses();
+            }
+        }
+
+        // Update navbar based on auth state
+        function updateNavbar() {
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const authButton = document.getElementById('authButton');
+            
+            if (currentUser) {
+                welcomeMessage.textContent = `Welcome, ${currentUser.username}`;
+                authButton.textContent = 'Logout';
+                authButton.onclick = logout;
+                
+                // Add My Courses link if not exists
+                const menu = document.getElementById('navbarMenu');
+                if (!document.getElementById('myCoursesLink')) {
+                    const myCoursesLink = document.createElement('a');
+                    myCoursesLink.id = 'myCoursesLink';
+                    myCoursesLink.href = '#';
+                    myCoursesLink.textContent = 'My Courses';
+                    myCoursesLink.onclick = (e) => {
+                        e.preventDefault();
+                        showPage('myCourses');
+                    };
+                    menu.insertBefore(myCoursesLink, welcomeMessage);
+                }
+            } else {
+                welcomeMessage.textContent = '';
+                authButton.textContent = 'Login';
+                authButton.onclick = () => showPage('login');
+                
+                const myCoursesLink = document.getElementById('myCoursesLink');
+                if (myCoursesLink) {
+                    myCoursesLink.remove();
+                }
+            }
+        }
+
+        // Authentication functions
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorDiv = document.getElementById('loginError');
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                
+                // Save to session storage
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Save to localStorage if remember me is checked
+                if (rememberMe) {
+                    localStorage.setItem('rememberedUser', JSON.stringify(user));
+                } else {
+                    localStorage.removeItem('rememberedUser');
+                }
+                
+                errorDiv.style.display = 'none';
+                updateNavbar();
+                showPage('courses');
+                
+                // Clear login form
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('rememberMe').checked = false;
+            } else {
+                errorDiv.textContent = 'Invalid email or password';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const errorDiv = document.getElementById('registerError');
+            const successDiv = document.getElementById('registerSuccess');
+            
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+            
+            if (users.some(u => u.email === email)) {
+                errorDiv.textContent = 'Email already registered';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+            
+            const newUser = {
+                id: users.length + 1,
+                username,
+                email,
+                password
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            successDiv.textContent = 'Registration successful! Please login.';
+            successDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+            
+            // Clear form
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerConfirmPassword').value = '';
+            
+            // Redirect to login page after 2 seconds
+            setTimeout(() => {
+                showPage('login');
+            }, 2000);
+        }
+
+        function logout() {
+            currentUser = null;
+            sessionStorage.removeItem('currentUser');
+            localStorage.removeItem('rememberedUser'); // Clear remembered login
+            updateNavbar();
+            showPage('courses');
+        }
+
+        function handleAuthAction() {
+            if (currentUser) {
+                logout();
+            } else {
+                showPage('login');
+            }
+        }
+
+        // Course functions
+        function renderCourses() {
+            const container = document.getElementById('coursesList');
+            
+            container.innerHTML = coursesData.map(course => `
+                <div class="course-card" onclick="viewCourse(${course.id})">
+                    <div class="course-thumbnail" style="background-image: url('${course.thumbnail}')">
+                        <span class="course-level">${course.level}</span>
+                    </div>
+                    <div class="course-info">
+                        <h3>${course.title}</h3>
+                        <div class="instructor">${course.instructor}</div>
+                        <div class="description">${course.description.substring(0, 100)}...</div>
+                        <div class="course-meta">
+                            <span>📚 ${course.totalVideos} videos</span>
+                            <span>⏱️ ${course.lessons.reduce((acc, l) => acc + l.duration, 0)} min</span>
+                        </div>
+                        ${isEnrolled(course.id) ? 
+                            '<button class="btn btn-success" onclick="event.stopPropagation(); continueLearning(' + course.id + ')">Continue Learning</button>' : 
+                            '<button class="btn btn-primary" onclick="event.stopPropagation(); enrollCourse(' + course.id + ')">Enroll Now</button>'
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewCourse(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course) return;
+            
+            const container = document.getElementById('courseDetail');
+            const isUserEnrolled = isEnrolled(courseId);
+            
+            container.innerHTML = `
+                <div class="course-detail">
+                    <div class="course-header">
+                        <h1>${course.title}</h1>
+                        ${!isUserEnrolled ? 
+                            '<button class="btn btn-success" onclick="enrollCourse(' + courseId + ')">Enroll Now</button>' : 
+                            '<button class="btn btn-success" onclick="continueLearning(' + courseId + ')">Continue Learning</button>'
+                        }
+                    </div>
+                    
+                    <div class="course-meta-info">
+                        <div class="meta-item">
+                            <div class="meta-label">Instructor</div>
+                            <div class="meta-value">${course.instructor}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Level</div>
+                            <div class="meta-value">${course.level}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Total Videos</div>
+                            <div class="meta-value">${course.totalVideos}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Total Duration</div>
+                            <div class="meta-value">${course.lessons.reduce((acc, l) => acc + l.duration, 0)} min</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="section-title">About this course</h2>
+                        <p style="color: #666; line-height: 1.6;">${course.description}</p>
+                    </div>
+                    
+                    <h2 class="section-title">Curriculum</h2>
+                    <div class="lessons-list">
+                        ${course.lessons.map((lesson, index) => `
+                            <div class="lesson-item">
+                                <div style="display: flex; align-items: center; flex: 1;">
+                                    <div class="lesson-number">${index + 1}</div>
+                                    <div class="lesson-info">
+                                        <div class="lesson-title">${lesson.title}</div>
+                                        <div class="lesson-duration">${lesson.duration} minutes</div>
+                                    </div>
+                                </div>
+                                ${isUserEnrolled && completedLessons[currentUser?.id]?.[courseId]?.includes(lesson.id) ?
+                                    '<span style="color: #48bb78;">✓ Completed</span>' : ''
+                                }
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            showPage('courseDetail');
+        }
+
+        function enrollCourse(courseId) {
+            if (!currentUser) {
+                showPage('login');
+                return;
+            }
+            
+            if (!enrollments[currentUser.id]) {
+                enrollments[currentUser.id] = [];
+            }
+            
+            if (!enrollments[currentUser.id].includes(courseId)) {
+                enrollments[currentUser.id].push(courseId);
+                localStorage.setItem('enrollments', JSON.stringify(enrollments));
+                
+                // Initialize completed lessons for this course
+                if (!completedLessons[currentUser.id]) {
+                    completedLessons[currentUser.id] = {};
+                }
+                if (!completedLessons[currentUser.id][courseId]) {
+                    completedLessons[currentUser.id][courseId] = [];
+                }
+                localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
+                
+                // Set first lesson as last watched
+                const course = coursesData.find(c => c.id === courseId);
+                if (course) {
+                    updateLastWatched(courseId, course.lessons[0].id);
+                }
+            }
+            
+            viewCourse(courseId);
+        }
+
+        function continueLearning(courseId) {
+            if (!currentUser) {
+                showPage('login');
+                return;
+            }
+            
+            startLearning(courseId);
+        }
+
+        function isEnrolled(courseId) {
+            return currentUser && enrollments[currentUser.id]?.includes(courseId);
+        }
+
+        function getLastWatched(courseId) {
+            return lastWatchedLessons[currentUser?.id]?.[courseId];
+        }
+
+        function updateLastWatched(courseId, lessonId) {
+            if (!currentUser) return;
+            
+            if (!lastWatchedLessons[currentUser.id]) {
+                lastWatchedLessons[currentUser.id] = {};
+            }
+            lastWatchedLessons[currentUser.id][courseId] = lessonId;
+            localStorage.setItem('lastWatchedLessons', JSON.stringify(lastWatchedLessons));
+        }
+
+        function getProgress(courseId) {
+            if (!currentUser) return 0;
+            
+            const course = coursesData.find(c => c.id === courseId);
+            const completed = completedLessons[currentUser.id]?.[courseId]?.length || 0;
+            const total = course.lessons.length;
+            
+            return total > 0 ? (completed / total) * 100 : 0;
+        }
+
+        function renderMyCourses() {
+            if (!currentUser) {
+                showPage('login');
+                return;
+            }
+            
+            const enrolledCourseIds = enrollments[currentUser.id] || [];
+            const enrolledCourses = coursesData.filter(c => enrolledCourseIds.includes(c.id));
+            
+            const container = document.getElementById('myCoursesList');
+            
+            if (enrolledCourses.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; color: white;">
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem;">You haven't enrolled in any courses yet.</p>
+                        <button class="btn btn-primary" onclick="showPage('courses')">Browse Courses</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = enrolledCourses.map(course => {
+                const progress = getProgress(course.id);
+                const completedCount = completedLessons[currentUser.id]?.[course.id]?.length || 0;
+                
+                return `
+                    <div class="course-card" onclick="continueLearning(${course.id})">
+                        <div class="course-thumbnail" style="background-image: url('${course.thumbnail}')">
+                            <span class="course-level">${course.level}</span>
+                        </div>
+                        <div class="course-info">
+                            <h3>${course.title}</h3>
+                            <div class="instructor">${course.instructor}</div>
+                            <div class="progress-container" style="margin: 1rem 0;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="progress-text">${Math.round(progress)}% Complete (${completedCount}/${course.lessons.length} lessons)</div>
+                            </div>
+                            <button class="btn btn-success">Continue Learning</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            showPage('myCourses');
+        }
+
+        function startLearning(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course) return;
+            
+            const lastWatchedId = getLastWatched(courseId);
+            let currentLesson = lastWatchedId ? 
+                course.lessons.find(l => l.id === lastWatchedId) : 
+                course.lessons[0];
+            
+            renderLearningPage(course, currentLesson);
+            showPage('learning');
+        }
+
+        function renderLearningPage(course, currentLesson) {
+            const container = document.getElementById('learningContent');
+            const progress = getProgress(course.id);
+            const completedForCourse = completedLessons[currentUser.id]?.[course.id] || [];
+            
+            container.innerHTML = `
+                <div class="learning-container">
+                    <div class="video-section">
+                        <div class="video-player">
+                            <video controls autoplay>
+                                <source src="${currentLesson.videoUrl}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        
+                        <div class="lesson-info">
+                            <h2>${currentLesson.title}</h2>
+                            <div class="lesson-description">${currentLesson.description}</div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="progress-text">Overall Progress: ${Math.round(progress)}%</div>
+                            </div>
+                            
+                            <div class="navigation-buttons">
+                                <button class="btn btn-primary" onclick="navigateLesson(${course.id}, 'prev')" ${course.lessons.indexOf(currentLesson) === 0 ? 'disabled' : ''}>
+                                    ← Previous
+                                </button>
+                                <button class="btn btn-success" onclick="markLessonComplete(${course.id}, ${currentLesson.id})">
+                                    Mark as Completed
+                                </button>
+                                <button class="btn btn-primary" onclick="navigateLesson(${course.id}, 'next')" ${course.lessons.indexOf(currentLesson) === course.lessons.length - 1 ? 'disabled' : ''}>
+                                    Next →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-sidebar">
+                        <h3>Course Lessons</h3>
+                        ${course.lessons.map(lesson => {
+                            const isCompleted = completedForCourse.includes(lesson.id);
+                            const isActive = lesson.id === currentLesson.id;
+                            
+                            return `
+                                <div class="sidebar-lesson-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+                                     onclick="changeLesson(${course.id}, ${lesson.id})">
+                                    <div class="sidebar-lesson-title">${lesson.title}</div>
+                                    <div class="sidebar-lesson-meta">
+                                        <span>${lesson.duration} min</span>
+                                        ${isCompleted ? '<span class="completed-badge">✓ Completed</span>' : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function changeLesson(courseId, lessonId) {
+            const course = coursesData.find(c => c.id === courseId);
+            const lesson = course.lessons.find(l => l.id === lessonId);
+            
+            updateLastWatched(courseId, lessonId);
+            renderLearningPage(course, lesson);
+        }
+
+        function navigateLesson(courseId, direction) {
+            const course = coursesData.find(c => c.id === courseId);
+            const currentLessonId = getLastWatched(courseId) || course.lessons[0].id;
+            const currentIndex = course.lessons.findIndex(l => l.id === currentLessonId);
+            
+            let newIndex;
+            if (direction === 'next') {
+                newIndex = currentIndex + 1;
+            } else {
+                newIndex = currentIndex - 1;
+            }
+            
+            if (newIndex >= 0 && newIndex < course.lessons.length) {
+                const newLesson = course.lessons[newIndex];
+                updateLastWatched(courseId, newLesson.id);
+                renderLearningPage(course, newLesson);
+            }
+        }
+
+        function markLessonComplete(courseId, lessonId) {
+            if (!currentUser) return;
+            
+            if (!completedLessons[currentUser.id]) {
+                completedLessons[currentUser.id] = {};
+            }
+            if (!completedLessons[currentUser.id][courseId]) {
+                completedLessons[currentUser.id][courseId] = [];
+            }
+            
+            if (!completedLessons[currentUser.id][courseId].includes(lessonId)) {
+                completedLessons[currentUser.id][courseId].push(lessonId);
+                localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
+                
+                // Move to next lesson
+                navigateLesson(courseId, 'next');
+            }
+        }
+
+        // Initialize the app
+        init();
+
+        // Make functions globally available
+        window.showPage = showPage;
+        window.viewCourse = viewCourse;
+        window.enrollCourse = enrollCourse;
+        window.continueLearning = continueLearning;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.logout = logout;
+        window.handleAuthAction = handleAuthAction;
+        window.changeLesson = changeLesson;
+        window.navigateLesson = navigateLesson;
+        window.markLessonComplete = markLessonComplete;
+    </script>
+</body>
+</html>
